@@ -12,16 +12,9 @@ muscle_sim::muscle_sim()
 // destructor
 muscle_sim::~muscle_sim()
 {
-	delete &muscle_response_latency;
-	delete &max_latency;
-	delete &min_latency;
-	delete &min_distance;
-	delete &max_distance;
-	delete &min_pressure;
-	delete &max_pressure;
 }
 
-std::array<int, 6> muscle_sim::calculate_process_variable_using_function(std::array<double, 6> applied_pressure)
+std::array<int, 6> muscle_sim::calculate_process_variable(std::array<double, 6> applied_pressure)
 {
 	std::array<int, 6> process_variable;
 	for (int i = 0; i < 6; i++)

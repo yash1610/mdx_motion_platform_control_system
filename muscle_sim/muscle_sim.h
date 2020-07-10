@@ -14,7 +14,7 @@ class muscle_sim // declaration of the class
 public:			   // begin public section
 	muscle_sim();  // constructor
 	~muscle_sim(); // destructor
-	std::array<int, 6> calculate_process_variable_using_function(std::array<double, 6> applied_pressure);
+	std::array<int, 6> calculate_process_variable(std::array<double, 6> applied_pressure);
 
 private: // begin private section
 	// member variables
