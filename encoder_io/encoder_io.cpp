@@ -26,7 +26,7 @@ void encoder_io::read_encoder_values()
 	{
 		read_buf[n] = 0;
 		p = std::strtok(read_buf, ",");
-		for (int i = 0; i <= 6; i++)
+		for (int i = 0; i <= 5; i++)
 		{
 			p = std::strtok(NULL, ",");
 			enc_val[i] = std::stoi(p);
