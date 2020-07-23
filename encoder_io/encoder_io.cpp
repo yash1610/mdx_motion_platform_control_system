@@ -1,7 +1,7 @@
-#include "encoder_reader.h"
+#include "encoder_io.h"
 #define BAUDRATE B57600
 
-encoder_reader::encoder_reader()
+encoder_io::encoder_io()
 {
 	fd = open("/dev/ttyACM0", O_RDWR | O_NOCTTY | O_SYNC);
 	fcntl(fd, F_SETFL, 0);
@@ -11,12 +11,12 @@ encoder_reader::encoder_reader()
 	}
 }
 
-encoder_reader::~encoder_reader()
+encoder_io::~encoder_io()
 {
 	close(fd);
 }
 
-void encoder_reader::read_encoder_values()
+void encoder_io::read_encoder_values()
 {
 	char read_buf[255];
 	char *p;
@@ -42,14 +42,19 @@ void encoder_reader::read_encoder_values()
 	}
 }
 
-std::array<int, 6> encoder_reader::encoder_values()
+std::array<int, 6> encoder_io::encoder_values()
 {
-	encoder_reader::read_encoder_values();
+	encoder_io::read_encoder_values();
 	return enc_val;
 }
 
-int encoder_reader::encoder_values(int x)
+int encoder_io::encoder_values(int x)
 {
-	encoder_reader::read_encoder_values();
+	encoder_io::read_encoder_values();
 	return enc_val[x];
+}
+
+void encoder_io::encoder_write(char x)
+{
+	write(fd, &x, 1);
 }
