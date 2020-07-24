@@ -10,6 +10,7 @@ muscle_sim::muscle_sim()
 	current_muscle_position = {0, 0, 0, 0, 0, 0};
 	final_muscle_position = {0, 0, 0, 0, 0, 0};
 	previously_applied_pressure = {0, 0, 0, 0, 0, 0};
+	time_at_pressure_application = -1000;
 }
 
 // destructor
@@ -17,8 +18,9 @@ muscle_sim::~muscle_sim()
 {
 }
 
-std::array<int, 6> muscle_sim::calculate_final_muscle_position(std::array<double, 6> applied_pressure)
+void muscle_sim::calculate_final_muscle_position(std::array<double, 6> applied_pressure)
 {
+	time_at_pressure_application = get_current_epoch_ms;
 	for (int i = 0; i < 6; i++)
 	{
 		if (applied_pressure[i] > previously_applied_pressure[i])
@@ -35,16 +37,18 @@ std::array<int, 6> muscle_sim::calculate_final_muscle_position(std::array<double
 		}
 	}
 	previously_applied_pressure = applied_pressure;
-	time_at_pressure_application = get_current_epoch_ms;
 }
 
 std::array<int, 6> muscle_sim::get_process_variable()
 {
-	std::srand(std::time(nullptr));
+	std::srand(std::time(nullptr)); // required for rng
+
 	std::array<int, 6> process_variable;
+
 	current_time = get_current_epoch_ms;
 	double time_diff = current_time - time_at_pressure_application;
-	if (time_diff <= 100)
+
+	if (time_diff <= 100 || time_at_pressure_application == -1000)
 	// assuming that the muscles takes 100ms to respond to applied pressure, there won't be a change in muscle position untill 100ms have passed
 	{
 		process_variable = current_muscle_position;

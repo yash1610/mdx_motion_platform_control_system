@@ -15,6 +15,10 @@ PID::PID(double sample_rate, double kp, double ki, double kd, double min_val, do
 	accumulated_integral_out = {0, 0, 0, 0, 0, 0};
 }
 
+PID::~PID()
+{
+}
+
 // function to change kp, ki, kd parameters
 void PID::change_tuning_params(double kp, double ki, double kd)
 {
