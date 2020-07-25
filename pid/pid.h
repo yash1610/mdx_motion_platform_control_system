@@ -9,7 +9,7 @@ class PID
 {
 public:
 	// constructor
-	PID(double sample_rate, double kp, double ki, double kd, double max_val, double min_val);
+	PID(double sample_rate, double kp, double ki, double kd, double min_val, double max_val);
 
 	// deconstructor
 	~PID();

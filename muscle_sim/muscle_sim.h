@@ -17,13 +17,22 @@ public:			   // begin public section
 	~muscle_sim(); // destructor
 	void calculate_final_muscle_position(std::array<double, 6> applied_pressure);
 	std::array<int, 6> get_process_variable();
+	std::array<int, 6> get_final_muscle_position();
 
 private: // begin private section
 	// member variables
-	const int min_distance = 0;	   // in millimeters
-	const int max_distance = 200;  //
-	const int min_pressure = 0;	   // in millibars
-	const int max_pressure = 6000; //
+	const int min_distance = 0;			 // in millimeters
+	const int max_distance = 200;		 //
+	const int min_pressure = 0;			 // in millibars
+	const int max_pressure = 6000;		 //
+	const int muscle_response_time = 10; // milliseconds
+	bool final_output_computed;
+
+	std::array<int, 6> pressure_change_characteristic;
+	// 0 = pressure was never applied before
+	// 1 = pressure didn't change
+	// 2 = drop in pressure from previous pressure values
+	// 3 = increase in pressuure from previous pressure values
 
 	std::array<double, 6> previously_applied_pressure;
 	std::array<int, 6> current_muscle_position;
@@ -31,7 +40,7 @@ private: // begin private section
 
 	double current_time;
 	double previous_time;
-	double time_at_pressure_application;
+	std::array<double, 6> time_at_pressure_application;
 
 	// private member function
 };

@@ -7,9 +7,10 @@
 int main()
 {
 	std::ofstream myfile;
-	myfile.open("example.txt");
+	myfile.open("sim_fucntion_test.csv");
 	int x;
 	double y;
+	myfile << "Distance, Pressure\n";
 	for (size_t i = 0; i < 6000; i++)
 	{
 		y = UP_POLY_COMPONENT(i) + UP_GAUSSIAN_COMPONENT(i);

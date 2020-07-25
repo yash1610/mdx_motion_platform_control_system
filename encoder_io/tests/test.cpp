@@ -6,7 +6,8 @@ int main()
 	int i = 0;
 	std::array<int, 6> x;
 	encoder_io enc;
-	while (i <= 100)
+	enc.encoder_write('R');
+	while (true)
 	{
 		x = enc.encoder_values();
 		printf("%d, %d, %d, %d, %d, %d \n", x[0], x[1], x[2], x[3], x[4], x[5]);
@@ -20,7 +21,6 @@ int main()
 	}
 	enc.~encoder_io();
 	// encoder_io enc;
-	// enc.encoder_write('R');
 	// while (i <= 10)
 	// {
 	// 	printf("%d\n", enc.encoder_values(3));
