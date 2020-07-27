@@ -72,6 +72,7 @@ TEST(pid_values_test, min_max_value_test)
 TEST(pid_compute_test, compute_test)
 {
 	std::array<double, 6> compute_output;
+	std::array<double, 6> previous_compute_output;
 	double sample_rate = 10;
 	double kp = 0.3;
 	double ki = 0.15;
@@ -88,14 +89,16 @@ TEST(pid_compute_test, compute_test)
 		compute_output = test_pid.PID::compute(setpoint, process_variable);
 		for (int i = 0; i < 6; i++)
 		{
-			EXPECT_TRUE(0 >= compute_output[i] <= 6000);
+			EXPECT_TRUE(0 >= compute_output[i] <= 6000 && compute_output[i] >= previous_compute_output[i]);
 		}
+		previous_compute_output = compute_output;
 	}
 }
 
 TEST(pid_compute_test, simple_compute_test)
 {
 	std::array<double, 6> compute_output;
+	std::array<double, 6> previous_compute_output;
 	double sample_rate = 10;
 	double kp = 0.3;
 	double ki = 0.15;
@@ -112,8 +115,9 @@ TEST(pid_compute_test, simple_compute_test)
 		compute_output = test_pid.PID::simple_compute(setpoint, process_variable);
 		for (int i = 0; i < 6; i++)
 		{
-			EXPECT_TRUE(0 >= compute_output[i] <= 6000);
+			EXPECT_TRUE(0 >= compute_output[i] <= 6000 && compute_output[i] >= previous_compute_output[i]);
 		}
+		previous_compute_output = compute_output;
 	}
 }
 
