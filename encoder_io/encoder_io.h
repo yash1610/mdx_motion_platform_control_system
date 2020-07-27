@@ -5,6 +5,7 @@
 #include <cstring> // memset
 #include <string>  // stoi
 #include <array>   // std::aray
+#include <stdexcept>
 
 // Linux headers
 #include <fcntl.h>	// file controls
@@ -15,7 +16,7 @@
 class encoder_io // declaration of the class
 {
 public:									 // begin public section
-	encoder_io();						 // constructor
+	encoder_io(const char *port);		 // constructor
 	~encoder_io();						 // destructor
 	std::array<int, 6> encoder_values(); // accessor function
 	int encoder_values(int x);			 // accessor function for a single encoder

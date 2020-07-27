@@ -1,12 +1,12 @@
 #include <iostream>
-#include "encoder_io.h"
+#include "../../encoder_io.h"
 
 int main()
 {
 	int i = 0;
 	std::array<int, 6> x;
-	encoder_io enc;
-	enc.encoder_write('R');
+	encoder_io enc("/dev/ttyACM0");
+	enc.encoder_io::encoder_write('R');
 	while (true)
 	{
 		x = enc.encoder_values();

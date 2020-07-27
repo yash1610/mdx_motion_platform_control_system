@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 	logfile << "pressure1,pressure2,pressure3,pressure4,pressure5,pressure6\n";
 
 	// initialize encoder
-	encoder_io encoder;
+	encoder_io encoder("/dev/ttyACM0");
 	encoder.encoder_write('R');
 	std::array<int, 6> setpoints;
 	// initalize muscle_simulation

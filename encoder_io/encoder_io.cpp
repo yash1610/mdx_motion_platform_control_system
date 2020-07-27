@@ -1,13 +1,14 @@
 #include "encoder_io.h"
 #define BAUDRATE B57600
 
-encoder_io::encoder_io()
+encoder_io::encoder_io(const char *port)
 {
-	fd = open("/dev/ttyACM0", O_RDWR | O_NOCTTY | O_SYNC);
+	// fd = open("/dev/ttyACM0", O_RDWR | O_NOCTTY | O_SYNC);
+	fd = open(port, O_RDWR | O_NOCTTY | O_SYNC);
 	fcntl(fd, F_SETFL, 0);
 	if (fd == -1)
 	{
-		printf("failed to open port\n");
+		throw std::runtime_error("Could not open port");
 	}
 }
 

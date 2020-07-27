@@ -1,7 +1,5 @@
 #include "muscle_sim.h"
-#define UP_POLY_COMPONENT(x) -0.0864580836854149382 - 0.0001004532392595508 * x - 0.0000023161937212715 * std::pow(x, 2) + 0.0000000132639645076 * std::pow(x, 3) - 0.0000000000036200247 * std::pow(x, 4) + 0.0000000000000002713 * std::pow(x, 5)
-#define UP_GAUSSIAN_COMPONENT(x) 18.8062963858669363049 * std::exp(-std::log(2) * std::pow(((x - 2792.7889820722848526202) / 540.3774049635310348094), 2))
-#define DOWN_POLY_COMPONENT(x) -0.153534501375474974 + 0.016147973880630856 * x - 0.000044351093632348 * std::pow(x, 2) + 0.000000046557904348 * std::pow(x, 3) - 0.000000000012817817 * std::pow(x, 4) + 0.000000000000001097 * std::pow(x, 5)
+
 #define get_current_epoch_ms std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
 // constructor of muscle_sim,
@@ -29,13 +27,13 @@ void muscle_sim::calculate_final_muscle_position(std::array<double, 6> applied_p
 		{
 			pressure_change_characteristic[i] = 3;
 			time_at_pressure_application[i] = get_current_epoch_ms;
-			final_muscle_position[i] = std::round(UP_POLY_COMPONENT(applied_pressure[i]) + UP_GAUSSIAN_COMPONENT(applied_pressure[i]));
+			final_muscle_position[i] = std::round(muscle_sim::up_poly_component(applied_pressure[i]) + muscle_sim::up_gaussian_component(applied_pressure[i]));
 		}
 		else if (applied_pressure[i] < previously_applied_pressure[i])
 		{
 			pressure_change_characteristic[i] = 2;
 			time_at_pressure_application[i] = get_current_epoch_ms;
-			final_muscle_position[i] = std::round(DOWN_POLY_COMPONENT(applied_pressure[i]));
+			final_muscle_position[i] = std::round(muscle_sim::down_poly_component(applied_pressure[i]));
 		}
 		else if (applied_pressure[i] == 0 && final_output_computed == false)
 		{
@@ -81,7 +79,11 @@ std::array<int, 6> muscle_sim::get_process_variable()
 		else
 		{
 			time_diff -= muscle_response_time;
-			if (pressure_change_characteristic[i] == 3)
+			if (pressure_change_characteristic[i] == 0)
+			{
+				process_variable[i] = 0;
+			}
+			else if (pressure_change_characteristic[i] == 3)
 			{
 				tentative_position = current_muscle_position[i] + (time_diff / 2.5); // assuming 2.5 ms taken for 1mm of change in movement
 				if (tentative_position < final_muscle_position[i] - 1)
@@ -120,4 +122,26 @@ std::array<int, 6> muscle_sim::get_process_variable()
 std::array<int, 6> muscle_sim::get_final_muscle_position()
 {
 	return final_muscle_position;
+}
+
+double muscle_sim::up_poly_component(double x)
+{
+	return -0.0864580836854149382 - 0.0001004532392595508 * x - 0.0000023161937212715 * std::pow(x, 2) + 0.0000000132639645076 * std::pow(x, 3) - 0.0000000000036200247 * std::pow(x, 4) + 0.0000000000000002713 * std::pow(x, 5);
+}
+double muscle_sim::up_gaussian_component(double x)
+{
+	return 18.8062963858669363049 * std::exp(-std::log(2) * std::pow(((x - 2792.7889820722848526202) / 540.3774049635310348094), 2));
+}
+double muscle_sim::down_poly_component(double x)
+{
+	double y;
+	if (x <= 4874)
+	{
+		y = -0.153534501375474974 + 0.016147973880630856 * x - 0.000044351093632348 * std::pow(x, 2) + 0.000000046557904348 * std::pow(x, 3) - 0.000000000012817817 * std::pow(x, 4) + 0.000000000000001097 * std::pow(x, 5);
+	}
+	else if (x >= 4875)
+	{
+		y = 199;
+	}
+	return y;
 }

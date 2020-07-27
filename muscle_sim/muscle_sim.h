@@ -19,6 +19,14 @@ public:			   // begin public section
 	std::array<int, 6> get_process_variable();
 	std::array<int, 6> get_final_muscle_position();
 
+	// I feel like these three methods should be private, but I also need to test them.
+	// Best way to test these methods would be to refactor them in a private implementation class (Pimpl idiom)
+	// and then test that class.
+	// But since this class doesn't really need to be secure, I am forgoing security in favor of simplicity
+	double up_poly_component(double x);
+	double up_gaussian_component(double x);
+	double down_poly_component(double x);
+
 private: // begin private section
 	// member variables
 	const int min_distance = 0;			 // in millimeters
