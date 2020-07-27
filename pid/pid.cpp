@@ -5,8 +5,8 @@ PID::PID(double sample_rate, double kp, double ki, double kd, double min_val, do
 {
 	i_sample_rate = sample_rate;
 	i_kp = kp;
-	i_kd = ki;
-	i_ki = kd;
+	i_ki = ki;
+	i_kd = kd;
 	i_min_val = min_val;
 	i_max_val = max_val;
 	pre_error = {0, 0, 0, 0, 0, 0};
@@ -23,8 +23,8 @@ PID::~PID()
 void PID::change_tuning_params(double kp, double ki, double kd)
 {
 	i_kp = kp;
-	i_kd = ki;
-	i_ki = kd;
+	i_ki = ki;
+	i_kd = kd;
 }
 
 // function to change sample rate
@@ -44,6 +44,21 @@ void PID::change_plant_min_max_values(double min_val, double max_val)
 double PID::get_sample_rate() const
 {
 	return i_sample_rate;
+}
+
+//function to get tuning parameters of the PID loop
+std::array<double, 3> PID::get_tuning_params() const
+{
+
+	std::array<double, 3> x = {i_kp, i_ki, i_kd};
+	return x;
+}
+
+//function to get sample_rate of the PID loop
+std::array<double, 2> PID::get_min_max_values() const
+{
+	std::array<double, 2> x{{i_min_val, i_max_val}};
+	return x;
 }
 
 // PID with integral and output clamping and also additional support for

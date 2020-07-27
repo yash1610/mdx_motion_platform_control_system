@@ -36,6 +36,10 @@ public:
 
 	//function to get sample_rate of the PID loop
 	double get_sample_rate() const;
+	//function to get tuning parameters of the PID loop
+	std::array<double, 3> get_tuning_params() const;
+	//function to get sample_rate of the PID loop
+	std::array<double, 2> get_min_max_values() const;
 
 private:
 	double i_sample_rate; // sample rate for the PID
